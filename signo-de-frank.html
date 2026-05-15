@@ -1,0 +1,774 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Signo de Frank — Consulta Cardiológica</title>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400&family=Source+Serif+4:ital,opsz,wght@0,8..60,300;0,8..60,400;0,8..60,600;1,8..60,300;1,8..60,400&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --crimson: #8B1A1A;
+      --crimson-light: #B02020;
+      --crimson-pale: #f5e8e8;
+      --ink: #1a1410;
+      --ink-muted: #3d3028;
+      --ink-faint: #7a6a5a;
+      --parchment: #faf7f2;
+      --parchment-dark: #f0ebe0;
+      --rule: #d9cfc0;
+      --accent-gold: #c8923a;
+      --white: #ffffff;
+    }
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      background: var(--parchment);
+      color: var(--ink);
+      font-family: 'Source Serif 4', Georgia, serif;
+      font-size: 18px;
+      line-height: 1.75;
+      min-height: 100vh;
+    }
+
+    /* ── HEADER ── */
+    header {
+      background: var(--ink);
+      color: var(--white);
+      padding: 0;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .header-inner {
+      max-width: 900px;
+      margin: 0 auto;
+      padding: 3.5rem 2rem 3rem;
+      position: relative;
+      z-index: 1;
+    }
+
+    .header-eyebrow {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.72rem;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--crimson-light);
+      margin-bottom: 1.2rem;
+      display: flex;
+      align-items: center;
+      gap: 0.8rem;
+    }
+
+    .header-eyebrow::after {
+      content: '';
+      flex: 1;
+      height: 1px;
+      background: var(--crimson-light);
+      opacity: 0.4;
+    }
+
+    header h1 {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(2.4rem, 5vw, 3.8rem);
+      font-weight: 900;
+      line-height: 1.1;
+      letter-spacing: -0.01em;
+      color: var(--white);
+      margin-bottom: 1.2rem;
+    }
+
+    header h1 em {
+      font-style: italic;
+      color: var(--crimson-light);
+    }
+
+    .header-subtitle {
+      font-family: 'Source Serif 4', serif;
+      font-size: 1.05rem;
+      font-weight: 300;
+      color: rgba(255,255,255,0.6);
+      font-style: italic;
+      max-width: 620px;
+    }
+
+    .header-deco {
+      position: absolute;
+      right: -60px;
+      top: -60px;
+      width: 340px;
+      height: 340px;
+      border-radius: 50%;
+      border: 60px solid var(--crimson);
+      opacity: 0.08;
+      pointer-events: none;
+    }
+
+    /* ── NAV ── */
+    nav {
+      background: var(--ink-muted);
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      border-bottom: 2px solid var(--crimson);
+    }
+
+    .nav-inner {
+      max-width: 900px;
+      margin: 0 auto;
+      padding: 0 2rem;
+      display: flex;
+      gap: 0;
+      overflow-x: auto;
+      scrollbar-width: none;
+    }
+    .nav-inner::-webkit-scrollbar { display: none; }
+
+    nav a {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.72rem;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: rgba(255,255,255,0.55);
+      text-decoration: none;
+      padding: 0.85rem 1.1rem;
+      white-space: nowrap;
+      transition: color 0.2s, background 0.2s;
+      border-bottom: 2px solid transparent;
+      margin-bottom: -2px;
+    }
+
+    nav a:hover {
+      color: var(--white);
+      background: rgba(255,255,255,0.04);
+      border-bottom-color: var(--accent-gold);
+    }
+
+    /* ── MAIN ── */
+    main {
+      max-width: 900px;
+      margin: 0 auto;
+      padding: 0 2rem 6rem;
+    }
+
+    /* ── INTRO QUESTIONS ── */
+    .intro-card {
+      background: var(--white);
+      border-left: 4px solid var(--crimson);
+      border-radius: 0 12px 12px 0;
+      padding: 2rem 2.2rem;
+      margin: 3rem 0 2.5rem;
+      box-shadow: 0 2px 20px rgba(0,0,0,0.06);
+    }
+
+    .intro-card h2 {
+      font-family: 'Playfair Display', serif;
+      font-size: 1rem;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--crimson);
+      margin-bottom: 1.1rem;
+    }
+
+    .intro-card ol {
+      padding-left: 1.4rem;
+      color: var(--ink-muted);
+    }
+
+    .intro-card li {
+      margin-bottom: 0.6rem;
+      font-style: italic;
+    }
+
+    /* ── SECTION ── */
+    section {
+      margin: 4rem 0;
+      scroll-margin-top: 64px;
+    }
+
+    .section-num {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.7rem;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--crimson);
+      display: block;
+      margin-bottom: 0.5rem;
+    }
+
+    section > h2 {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(1.7rem, 3.5vw, 2.3rem);
+      font-weight: 700;
+      line-height: 1.2;
+      color: var(--ink);
+      margin-bottom: 1.8rem;
+      padding-bottom: 1rem;
+      border-bottom: 1px solid var(--rule);
+    }
+
+    section > h3 {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.35rem;
+      font-weight: 700;
+      font-style: italic;
+      color: var(--ink-muted);
+      margin: 2.5rem 0 1rem;
+    }
+
+    section p {
+      margin-bottom: 1.3rem;
+      color: var(--ink-muted);
+      font-size: 1rem;
+      line-height: 1.82;
+    }
+
+    /* ── STATS ── */
+    .stats-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+      gap: 1rem;
+      margin: 2rem 0;
+    }
+
+    .stat-card {
+      background: var(--ink);
+      color: var(--white);
+      border-radius: 10px;
+      padding: 1.4rem 1.2rem;
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .stat-card::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 0; right: 0;
+      height: 3px;
+      background: var(--crimson-light);
+    }
+
+    .stat-num {
+      font-family: 'Playfair Display', serif;
+      font-size: 2.2rem;
+      font-weight: 900;
+      color: var(--crimson-light);
+      display: block;
+      line-height: 1;
+      margin-bottom: 0.4rem;
+    }
+
+    .stat-label {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.68rem;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: rgba(255,255,255,0.55);
+      line-height: 1.4;
+    }
+
+    /* ── HIGHLIGHT BOX ── */
+    .highlight {
+      background: var(--crimson-pale);
+      border: 1px solid #d4a0a0;
+      border-left: 4px solid var(--crimson);
+      border-radius: 0 8px 8px 0;
+      padding: 1.4rem 1.6rem;
+      margin: 1.8rem 0;
+      font-size: 0.97rem;
+      color: var(--ink-muted);
+    }
+
+    .highlight strong {
+      color: var(--crimson);
+    }
+
+    /* ── HYPOTHESIS BOX ── */
+    .hypothesis {
+      background: var(--parchment-dark);
+      border: 1px solid var(--rule);
+      border-radius: 10px;
+      padding: 1.6rem 1.8rem;
+      margin: 2rem 0;
+      position: relative;
+    }
+
+    .hypothesis::before {
+      content: 'Hipótesis de investigación';
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.65rem;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: var(--accent-gold);
+      display: block;
+      margin-bottom: 0.8rem;
+    }
+
+    .hypothesis p {
+      font-style: italic;
+      color: var(--ink-muted);
+      margin: 0;
+      font-size: 0.97rem;
+    }
+
+    /* ── CLASSIFICATION TABLE ── */
+    .classif-table {
+      width: 100%;
+      border-collapse: collapse;
+      margin: 2rem 0;
+      font-size: 0.9rem;
+      box-shadow: 0 2px 16px rgba(0,0,0,0.06);
+      border-radius: 10px;
+      overflow: hidden;
+    }
+
+    .classif-table thead {
+      background: var(--ink);
+      color: var(--white);
+    }
+
+    .classif-table th {
+      padding: 0.9rem 1.1rem;
+      text-align: left;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.7rem;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      font-weight: 500;
+    }
+
+    .classif-table td {
+      padding: 0.85rem 1.1rem;
+      border-bottom: 1px solid var(--rule);
+      color: var(--ink-muted);
+      vertical-align: top;
+      line-height: 1.5;
+    }
+
+    .classif-table tr:last-child td { border-bottom: none; }
+
+    .classif-table tr:nth-child(even) td {
+      background: rgba(240,235,224,0.5);
+    }
+
+    .classif-table .tag {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.7rem;
+      background: var(--crimson);
+      color: var(--white);
+      padding: 0.15rem 0.5rem;
+      border-radius: 4px;
+      display: inline-block;
+      margin-bottom: 0.2rem;
+    }
+
+    /* ── SUMMARY BULLETS ── */
+    .summary-list {
+      list-style: none;
+      padding: 0;
+      margin: 1.5rem 0;
+    }
+
+    .summary-list li {
+      padding: 1rem 1.2rem 1rem 3.5rem;
+      margin-bottom: 0.8rem;
+      background: var(--white);
+      border-radius: 8px;
+      border: 1px solid var(--rule);
+      color: var(--ink-muted);
+      font-size: 0.97rem;
+      position: relative;
+      line-height: 1.6;
+      box-shadow: 0 1px 6px rgba(0,0,0,0.04);
+    }
+
+    .summary-list li::before {
+      content: attr(data-icon);
+      position: absolute;
+      left: 1.1rem;
+      top: 1rem;
+      font-size: 1.1rem;
+    }
+
+    /* ── REFERENCES ── */
+    #referencias {
+      margin-top: 5rem;
+      padding-top: 3rem;
+      border-top: 2px solid var(--rule);
+    }
+
+    #referencias h2 {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.5rem;
+      color: var(--ink);
+      margin-bottom: 1.5rem;
+    }
+
+    .refs-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+      gap: 0.8rem;
+    }
+
+    .ref-item {
+      background: var(--white);
+      border: 1px solid var(--rule);
+      border-radius: 8px;
+      padding: 0.9rem 1rem;
+      font-size: 0.8rem;
+      color: var(--ink-faint);
+      display: flex;
+      gap: 0.7rem;
+      align-items: flex-start;
+      transition: border-color 0.2s, box-shadow 0.2s;
+    }
+
+    .ref-item:hover {
+      border-color: var(--crimson);
+      box-shadow: 0 2px 10px rgba(139,26,26,0.1);
+    }
+
+    .ref-num {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.68rem;
+      color: var(--crimson);
+      background: var(--crimson-pale);
+      padding: 0.1rem 0.45rem;
+      border-radius: 4px;
+      white-space: nowrap;
+      flex-shrink: 0;
+      margin-top: 0.1rem;
+    }
+
+    .ref-item a {
+      color: var(--ink-faint);
+      text-decoration: none;
+      word-break: break-word;
+    }
+
+    .ref-item a:hover { color: var(--crimson); }
+
+    /* ── FOOTER ── */
+    footer {
+      background: var(--ink);
+      color: rgba(255,255,255,0.4);
+      text-align: center;
+      padding: 2rem;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.7rem;
+      letter-spacing: 0.08em;
+    }
+
+    /* ── RESPONSIVE ── */
+    @media (max-width: 640px) {
+      body { font-size: 16px; }
+      .header-inner { padding: 2.5rem 1.2rem 2rem; }
+      main { padding: 0 1.2rem 4rem; }
+      .stats-grid { grid-template-columns: repeat(2, 1fr); }
+      .refs-grid { grid-template-columns: 1fr; }
+    }
+
+    /* ── ANIMATIONS ── */
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(16px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    section, .intro-card {
+      animation: fadeUp 0.5s ease both;
+    }
+
+    section:nth-child(2) { animation-delay: 0.05s; }
+    section:nth-child(3) { animation-delay: 0.1s; }
+    section:nth-child(4) { animation-delay: 0.15s; }
+  </style>
+</head>
+<body>
+
+<header>
+  <div class="header-deco"></div>
+  <div class="header-inner">
+    <div class="header-eyebrow">Cardiología clínica &nbsp;·&nbsp; Consulta especializada</div>
+    <h1>El <em>Signo de Frank</em><br>en Enfermedad Coronaria</h1>
+    <p class="header-subtitle">Prevalencia, clasificaciones de severidad y valor diagnóstico — con sustento bibliográfico científico.</p>
+  </div>
+</header>
+
+<nav>
+  <div class="nav-inner">
+    <a href="#preguntas">Preguntas</a>
+    <a href="#prevalencia">1. Prevalencia</a>
+    <a href="#clasificaciones">2. Clasificaciones</a>
+    <a href="#asociaciones">3. Asociaciones</a>
+    <a href="#referencias">Referencias</a>
+  </div>
+</nav>
+
+<main>
+
+  <!-- INTRO -->
+  <div class="intro-card" id="preguntas">
+    <h2>Preguntas planteadas</h2>
+    <ol>
+      <li>¿Cuál es la prevalencia del signo de Frank en la enfermedad coronaria?</li>
+      <li>¿Qué clasificaciones de severidad de la enfermedad coronaria basadas en anatomía y variables hemodinámicas son utilizadas en cardiología?</li>
+      <li>El signo de Frank, ¿está asociado a la severidad?, ¿es un marcador precoz?, ¿o se asocia a un tipo de infarto específico?</li>
+    </ol>
+  </div>
+
+  <!-- ══════════════════════════════════════════
+       SECCIÓN 1 — PREVALENCIA
+  ══════════════════════════════════════════ -->
+  <section id="prevalencia">
+    <span class="section-num">Pregunta 1</span>
+    <h2>Prevalencia del signo de Frank en enfermedad coronaria</h2>
+
+    <p>El signo de Frank —el surco diagonal del lóbulo de la oreja— muestra una prevalencia alta en poblaciones con enfermedad coronaria, aunque las estimaciones varían según la edad, el diseño del estudio y el contexto clínico.</p>
+
+    <div class="stats-grid">
+      <div class="stat-card">
+        <span class="stat-num">69%</span>
+        <span class="stat-label">Prevalencia del signo en series coronariográficas</span>
+      </div>
+      <div class="stat-card">
+        <span class="stat-num">93.6%</span>
+        <span class="stat-label">Portadores con signo (+) que tenían EAC significativa</span>
+      </div>
+      <div class="stat-card">
+        <span class="stat-num">62%</span>
+        <span class="stat-label">Prevalencia en pctes. ≤65 a. con cardiopatía isquémica (estudio mexicano)</span>
+      </div>
+      <div class="stat-card">
+        <span class="stat-num">OR 3.26</span>
+        <span class="stat-label">Asociación independiente con EAC grave (IC 95% 1.98–5.38)</span>
+      </div>
+    </div>
+
+    <p>En un estudio observacional coronariográfico con <strong>515 pacientes</strong>, la prevalencia de ateroesclerosis coronaria significativa fue del 81,2 %, mientras que la del signo de Frank fue del 69,3 %. Entre quienes presentaban el signo, el 93,6 % tenía enfermedad coronaria significativa (VPP: 93,6 %; sensibilidad: 79,9 %; especificidad: 76,3 %; VPN: 46,8 %).</p>
+
+    <div class="highlight">
+      <strong>Nota metodológica:</strong> En poblaciones generales o ambulatorias la prevalencia es menor y muy dependiente de la edad —poco frecuente en menores de 40 años. En adultos mayores la prevalencia absoluta puede ser elevada aun sin estratificar por EAC confirmada. La mayoría de estudios son observacionales con sesgo de selección (hospitales de tercer nivel), lo que limita su uso como marcador independiente en la práctica general.
+    </div>
+
+    <div class="hypothesis">
+      <p>"En una cohorte poblacional urbana de adultos de 40–75 años sin EAC conocida, la presencia bilateral del signo de Frank se asocia con mayor prevalencia de EAC subclínica determinada por score de calcio coronario, independientemente de edad, sexo, tabaquismo y síndrome metabólico."</p>
+    </div>
+  </section>
+
+  <!-- ══════════════════════════════════════════
+       SECCIÓN 2 — CLASIFICACIONES
+  ══════════════════════════════════════════ -->
+  <section id="clasificaciones">
+    <span class="section-num">Pregunta 2</span>
+    <h2>Clasificaciones de severidad de la enfermedad coronaria</h2>
+
+    <p>La severidad de la enfermedad coronaria se evalúa mediante una combinación de características <strong>anatómicas</strong> (patrón y extensión de la estenosis en coronariografía o angio-TC) y parámetros <strong>funcionales/hemodinámicos</strong> (FFR, índices de microcirculación, etc.).</p>
+
+    <table class="classif-table">
+      <thead>
+        <tr>
+          <th>Sistema / Índice</th>
+          <th>Tipo</th>
+          <th>Descripción</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><strong>Gensini Score</strong></td>
+          <td><span class="tag">Anatómico</span></td>
+          <td>Pondera el grado de estenosis luminal (25%, 50%, 75%, 90%, 99%, oclusión) y el territorio miocárdico perfundido. Asigna un puntaje total que refleja la carga global de ateroesclerosis.</td>
+        </tr>
+        <tr>
+          <td><strong>Duke CAD Index</strong></td>
+          <td><span class="tag">Anatómico</span></td>
+          <td>Integra número de vasos afectados, localización y severidad de las estenosis.</td>
+        </tr>
+        <tr>
+          <td><strong>SYNTAX Score</strong></td>
+          <td><span class="tag">Anatómico</span></td>
+          <td>Valora la carga ateroesclerótica total y la complejidad anatómica: lesiones bifurcacionales, calcificación, tortuosidad, oclusiones crónicas. Guía la decisión entre cirugía (CABG) y angioplastia (PCI) en enfermedad multivaso.</td>
+        </tr>
+        <tr>
+          <td><strong>FFR</strong> (Fracción de Flujo de Reserva)</td>
+          <td><span class="tag">Funcional</span></td>
+          <td>Relación entre la presión distal coronaria y la presión aórtica durante hiperemia máxima. Valor ≤0,80 indica isquemia significativa que se beneficiaría de revascularización.</td>
+        </tr>
+        <tr>
+          <td><strong>iFR</strong> (Índice sin Hiperemia)</td>
+          <td><span class="tag">Funcional</span></td>
+          <td>Permite cuantificación de la repercusión hemodinámica de las estenosis sin necesidad de adenosina, diferenciando enfermedad epicárdica de disfunción microvascular.</td>
+        </tr>
+        <tr>
+          <td><strong>Reserva de Flujo Coronario (CFR)</strong></td>
+          <td><span class="tag">Funcional</span></td>
+          <td>Evalúa la capacidad de aumento del flujo coronario ante hiperemia. Útil para valorar disfunción microvascular.</td>
+        </tr>
+        <tr>
+          <td><strong>Score de Calcio Coronario</strong></td>
+          <td><span class="tag">No invasivo</span></td>
+          <td>Estratificación de riesgo por TC sin contraste. No clasifica severidad anatómica directamente, pero orienta la intensidad de intervención.</td>
+        </tr>
+        <tr>
+          <td><strong>SYNTAX + FFR combinado</strong></td>
+          <td><span class="tag">Combinado</span></td>
+          <td>Integración anatómico-funcional emergente: SYNTAX para la carga global y FFR para la relevancia funcional de cada lesión individual.</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <p>Las guías contemporáneas favorecen la integración de enfoques anatómicos y funcionales, especialmente en pacientes con enfermedad difusa o diabetes, donde los scores puramente anatómicos pueden subestimar o sobreestimar la repercusión clínica.</p>
+
+    <div class="hypothesis">
+      <p>"En pacientes con enfermedad coronaria multivaso, la combinación de SYNTAX score y FFR de lesiones intermedias mejora la clasificación pronóstica de mortalidad y re-infarto a 5 años en comparación con el uso exclusivo del SYNTAX score."</p>
+    </div>
+  </section>
+
+  <!-- ══════════════════════════════════════════
+       SECCIÓN 3 — ASOCIACIONES
+  ══════════════════════════════════════════ -->
+  <section id="asociaciones">
+    <span class="section-num">Pregunta 3</span>
+    <h2>Signo de Frank: severidad, marcador precoz o tipo de infarto</h2>
+
+    <h3>3.1 Asociación con severidad de la enfermedad coronaria</h3>
+
+    <p>Existe evidencia creciente de que el signo de Frank se asocia con la <strong>severidad</strong> de la enfermedad coronaria, medida tanto por extensión (número de vasos) como por complejidad (oclusiones crónicas, alta carga ateroesclerótica).</p>
+
+    <div class="highlight">
+      <strong>Estudio coronariográfico mexicano:</strong> Los pacientes con signo de Frank presentaron mayor proporción de enfermedad multivaso (64,4% vs. 27,2%) y más oclusiones crónicas totales (33% vs. 12%), con diferencias estadísticamente significativas (p=0,0001). En el análisis multivariado, el signo se asoció de forma independiente con EAC grave (OR 3,26; IC 95% 1,98–5,38; p≤0,001), junto con sexo masculino y dislipidemia.
+    </div>
+
+    <p>Una revisión de 57 estudios señala una asociación consistente entre el signo de Frank y enfermedades cardiovasculares, incluyendo cardiopatía isquémica, enfermedad vascular periférica, aumento del grosor íntima-media carotídeo y mayor riesgo de eventos y muerte cardiovascular. Estudios de autopsia han encontrado mayor frecuencia del pliegue diagonal en personas con muerte de causa cardiovascular (cardiopatía isquémica, enfermedad hipertensiva, aneurismas aórticos).</p>
+
+    <h3>3.2 ¿Marcador precoz o marcador de enfermedad establecida?</h3>
+
+    <p>Originalmente Frank describió el pliegue diagonal como posible predictor de <em>futura</em> enfermedad coronaria, motivando su consideración como marcador potencialmente precoz. Sin embargo, la mayor parte de la evidencia procede de estudios transversales o de casos y controles, que no permiten establecer una secuencia temporal clara.</p>
+
+    <p>Algunos datos apuntan a que el signo aparece incluso en fases preclínicas (sujetos con mayor grosor íntima-media carotídeo o score de calcio más elevado). No obstante, el estudio coronariográfico muestra que el signo se asocia principalmente con enfermedad coronaria significativa y más severa, lo que sugiere que su presencia es más frecuente en fases avanzadas de la ateroesclerosis — es decir, un <strong>marcador de carga ateroesclerótica global</strong> más que un factor de riesgo precoz.</p>
+
+    <div class="highlight">
+      <strong>Limitación central:</strong> La clasificación del signo de Frank como "marcador precoz" requiere estudios longitudinales en cohortes libres de EAC al inicio, con seguimiento en el tiempo y mediciones seriadas. Hasta la fecha, los datos son mayoritariamente transversales o retrospectivos.
+    </div>
+
+    <h3>3.3 Asociación con infarto agudo de miocardio o tipo específico</h3>
+
+    <p>En un estudio mexicano de casos y controles (hospital de segundo nivel), el signo estuvo presente en el <strong>66,6 %</strong> de los pacientes con IAM, frente al 23,6 % en controles sin IAM; OR de <strong>3,78</strong> (IC 95% 2,5–5,5). El signo se presentó indistintamente en ambos sexos y no mostró asociación con diabetes, hipertensión ni tabaquismo en ese análisis.</p>
+
+    <p>Sin embargo, la literatura <strong>no describe de manera consistente</strong> una asociación con un tipo específico de infarto (IAM-CEST vs. IAM-SEST, localización anterior vs. inferior). La mayoría de los trabajos se han centrado en la presencia o ausencia de IAM o cardiopatía isquémica en general, sin estratificar por subtipo. Datos emergentes proponen al signo como posible factor pronóstico en síndrome coronario agudo sin elevación del ST —asociado con marcadores inflamatorios y estrés oxidativo—, pero aún no están incorporados en guías clínicas.</p>
+
+    <h3>Síntesis: tres roles posibles del signo de Frank</h3>
+
+    <ul class="summary-list">
+      <li data-icon="🔴">
+        <strong>Marcador de severidad:</strong> asociado con carga de enfermedad multivaso, oclusiones crónicas y EAC grave en estudios coronariográficos y cardiopatía isquémica estable o crónica.
+      </li>
+      <li data-icon="🟠">
+        <strong>Marcador asociado a IAM:</strong> OR en torno a 3–4 en estudios de casos y controles, con limitaciones metodológicas; requiere confirmación en estudios prospectivos multicéntricos.
+      </li>
+      <li data-icon="🟡">
+        <strong>Indicio de ateroesclerosis sistémica:</strong> posiblemente más que un factor causal o marcador precoz bien establecido; su valor como herramienta de screening temprano requiere evidencia longitudinal y estandarización en la evaluación (bilateralidad, profundidad, clasificación del pliegue).
+      </li>
+    </ul>
+
+    <div class="hypothesis">
+      <p>"En pacientes que acuden a urgencias con sospecha de síndrome coronario agudo, la presencia bilateral del signo de Frank mejora la discriminación de un modelo clínico estándar (edad, sexo, factores de riesgo, ECG y troponinas) para predecir IAM con elevación del ST frente a otros diagnósticos, medida por el incremento en el área bajo la curva ROC."</p>
+    </div>
+  </section>
+
+  <!-- ══════════════════════════════════════════
+       REFERENCIAS
+  ══════════════════════════════════════════ -->
+  <section id="referencias">
+    <h2>Referencias bibliográficas</h2>
+    <div class="refs-grid">
+
+      <div class="ref-item">
+        <span class="ref-num">[1]</span>
+        <div><a href="https://dialnet.unirioja.es/servlet/articulo?codigo=9212999" target="_blank" rel="noopener">Dialnet — Signo de Frank y EAC grave en ≤65 años (OR 3,26). Medicina Clínica.</a></div>
+      </div>
+
+      <div class="ref-item">
+        <span class="ref-num">[2]</span>
+        <div><a href="https://repositorio.udem.edu.mx/items/ce280573-dc1d-4a93-a25a-96643ede096b" target="_blank" rel="noopener">UDEM — Estudio coronariográfico (n=515): prevalencia, VPP, sensibilidad y especificidad del signo de Frank.</a></div>
+      </div>
+
+      <div class="ref-item">
+        <span class="ref-num">[3]</span>
+        <div><a href="https://dialnet.unirioja.es/servlet/tesis?codigo=239263" target="_blank" rel="noopener">Dialnet — Tesis doctoral: Signo de Frank y riesgo cardiovascular en población española adulta.</a></div>
+      </div>
+
+      <div class="ref-item">
+        <span class="ref-num">[4]</span>
+        <div><a href="http://www.scielo.org.co/pdf/rfmun/v62n3/v62n3a19.pdf" target="_blank" rel="noopener">SciELO — Revisión colombiana: pliegue diagonal del lóbulo auricular y prevalencia en población general.</a></div>
+      </div>
+
+      <div class="ref-item">
+        <span class="ref-num">[5]</span>
+        <div><a href="http://www.scielo.org.co/scielo.php?script=sci_arttext&pid=S0120-00112014000300019" target="_blank" rel="noopener">SciELO Colombia — Signo de Frank: revisión y dependencia etaria de la prevalencia.</a></div>
+      </div>
+
+      <div class="ref-item">
+        <span class="ref-num">[6]</span>
+        <div><a href="https://www.cardiolatina.com/noticias/el-signo-de-frank-en-cardiolatina/" target="_blank" rel="noopener">Cardiolatina — Revisión de 57 estudios: asociación con cardiopatía isquémica, enfermedad vascular periférica y mortalidad cardiovascular.</a></div>
+      </div>
+
+      <div class="ref-item">
+        <span class="ref-num">[7]</span>
+        <div><a href="https://recintervcardiol.org/images/pdf-files/10_recic_22_040_ar_vilchez_es.pdf" target="_blank" rel="noopener">REC Interv Cardiol — Fisiología coronaria: FFR, iFR, CFR y resistencias microvasculares.</a></div>
+      </div>
+
+      <div class="ref-item">
+        <span class="ref-num">[8]</span>
+        <div><a href="https://piper.espacio-seram.com/index.php/seram/article/view/4243" target="_blank" rel="noopener">SERAM — Score de calcio coronario y clasificación de severidad no invasiva.</a></div>
+      </div>
+
+      <div class="ref-item">
+        <span class="ref-num">[9]</span>
+        <div><a href="https://www.msdmanuals.com/es/professional/trastornos-cardiovasculares/enfermedad-coronaria/generalidades-sobre-la-enfermedad-coronaria" target="_blank" rel="noopener">MSD Manuals (ES) — Generalidades sobre enfermedad coronaria: clasificación y tratamiento.</a></div>
+      </div>
+
+      <div class="ref-item">
+        <span class="ref-num">[10]</span>
+        <div><a href="https://www.svcardiologia.com/publicacion/signo-de-frank-y-su-relacion-con-la-cardiopatia-isquemica-reporte-de-casos/" target="_blank" rel="noopener">SVC — Signo de Frank y cardiopatía isquémica: reporte de casos. Sociedad Venezolana de Cardiología.</a></div>
+      </div>
+
+      <div class="ref-item">
+        <span class="ref-num">[11]</span>
+        <div><a href="https://revistasdigitales.uniboyaca.edu.co/index.php/rs/article/download/691/645/6325" target="_blank" rel="noopener">Uniboyacá — Signo de Frank: revisión narrativa de la literatura latinoamericana.</a></div>
+      </div>
+
+      <div class="ref-item">
+        <span class="ref-num">[12]</span>
+        <div><a href="https://repositorio.udem.edu.mx/items/927d6851-da83-4caa-bed9-ed9de4c54585" target="_blank" rel="noopener">UDEM — Caso-control: signo de Frank en IAM (66,6% vs. 23,6%; OR 3,78).</a></div>
+      </div>
+
+      <div class="ref-item">
+        <span class="ref-num">[13]</span>
+        <div><a href="https://repositorio.udem.edu.mx/items/927d6851-da83-4caa-bed9-ed9de4c54585/full" target="_blank" rel="noopener">UDEM (texto completo) — Ídem ref. 12: análisis por sexo y factores de riesgo convencionales.</a></div>
+      </div>
+
+      <div class="ref-item">
+        <span class="ref-num">[14]</span>
+        <div><a href="https://www.medigraphic.com/pdfs/corsalud/cor-2022/cor224l.pdf" target="_blank" rel="noopener">Cor Salud — Signo de Frank en síndrome coronario agudo: factores inflamatorios y estrés oxidativo.</a></div>
+      </div>
+
+      <div class="ref-item">
+        <span class="ref-num">[15]</span>
+        <div><a href="https://repositorio.uees.edu.ec:8443/server/api/core/bitstreams/296fea8c-1262-478a-adc8-fe027c32e099/content" target="_blank" rel="noopener">UEES — Revisión sobre el pliegue diagonal del lóbulo: mecanismos biológicos propuestos.</a></div>
+      </div>
+
+    </div>
+  </section>
+
+</main>
+
+<footer>
+  Documento generado con fines académicos · Cardiología clínica · Signo de Frank 2024–2025
+</footer>
+
+</body>
+</html>
